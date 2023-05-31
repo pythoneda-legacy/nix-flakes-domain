@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "pythoneda-nix-flakes"
+version = "0.0.1a2"
+description = "Nix Flakes in PythonEDA"
+authors = ["rydnr <github@acm-sl.org>"]
+readme = "README.md"
+homepage = "https://github.com/python/nix-flakes"
+packages = [{include = "PythonEDANixFlakes"}]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+pythoneda = "^0.0.1a7"
+pythoneda-git-repositories = "^0.0.1a4"
+pythoneda-shared-nix = "^0.0.1a4"
+pythoneda-python-packages = "^0.0.1a3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
