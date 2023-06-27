@@ -1,22 +1,42 @@
-from PythonEDA.entity import Entity
-from PythonEDA.event import Event
-from PythonEDA.event_emitter import EventEmitter
-from PythonEDA.event_listener import EventListener
-from PythonEDA.ports import Ports
-from PythonEDA.value_object import attribute, primary_key_attribute
-from PythonEDAGitRepositories.git_repo import GitRepo
-from PythonEDAGitRepositories.git_repo_repo import GitRepoRepo
-from PythonEDANixFlakes.build.build_flake_requested import BuildFlakeRequested
-from PythonEDANixFLakes.flake_available import FlakeAvailable
-from PythonEDANixFlakes.flake_in_progress import FlakeInProgress
-from PythonEDANixFlakes.flake_requested import FlakeRequested
-from PythonEDANixShared.nix_template import NixTemplate
-from PythonEDANixShared.python.nix_python_package_in_nixpkgs import NixPythonPackageInNixpkgs
-from PythonEDANixShared.python.nix_python_package_repo import NixPythonPackageRepo
-from PythonEDAPythonPackages.python_package import PythonPackage
-from PythonEDAPythonPackages.python_package_created import PythonPackageCreated
-from PythonEDAPythonPackages.python_package_requested import PythonPackageRequested
-from PythonEDAPythonPackages.python_package_resolved import PythonPackageResolved
+"""
+pythonedanixflakes/flake.py
+
+This file defines the Flake class.
+
+Copyright (C) 2023-today rydnr's pythoneda/nix-flakes
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+from pythoneda.entity import Entity
+from pythoneda.event import Event
+from pythoneda.event_emitter import EventEmitter
+from pythoneda.event_listener import EventListener
+from pythoneda.ports import Ports
+from pythoneda.value_object import attribute, primary_key_attribute
+from pythonedasharedgit.git_repo import GitRepo
+from pythonedasharedgit.git_repo_repo import GitRepoRepo
+from pythonedanixflakes.build.build_flake_requested import BuildFlakeRequested
+from pythonedaeventnixflakes.flake_available import FlakeAvailable
+from pythonedanixflakes.flake_in_progress import FlakeInProgress
+from pythonedaeventnixflakes.flake_requested import FlakeRequested
+from pythonedasharednix.nix_template import NixTemplate
+from pythonedasharednix.python.nix_python_package_in_nixpkgs import NixPythonPackageInNixpkgs
+from pythonedasharednix.python.nix_python_package_repo import NixPythonPackageRepo
+from pythonedapythonpackages.python_package import PythonPackage
+from pythonedaeventpythonpackages.python_package_created import PythonPackageCreated
+from pythonedaeventpythonpackages.python_package_requested import PythonPackageRequested
+from pythonedaeventpythonpackages.python_package_resolved import PythonPackageResolved
 
 from typing import Dict, List, Type
 import logging
@@ -25,9 +45,36 @@ class Flake(Entity, EventListener, EventEmitter):
 
     """
     Represents a nix flake.
+
+    Class name: Flake
+
+    Responsibilities:
+        - Represent a Nix flake.
+        - React upon receiving FlakeRequested events.
+
+    Collaborators:
+        - FlakeRequested: The event when a flake is requested.
     """
     def __init__(self, name: str, version: str, pythonPackage: PythonPackage, nativeBuildInputs: List, propagatedBuildInputs: List, buildInputs: List, checkInputs: List, optionalBuildInputs: List):
-        """Creates a new flake instance"""
+        """
+        Creates a new flake instance.
+        :param name: The flake name.
+        :type name: str
+        :param version: The flake version.
+        :type version: str
+        :param pythonPackage: The Python package.
+        :type pythonPackage: PythonPackage from pythonedasharedpython.python_package
+        :param nativeBuildInputs: The list of native build inputs.
+        :type nativeBuildInputs: List
+        :param propagatedBuildInputs: The list of propagated build inputs.
+        :type propagatedBuildInputs: List
+        :param buildInputs: The list of build inputs.
+        :type buildInputs: List
+        :param checkInputs: The list of check inputs.
+        :type checkInputs: List
+        :param optionalBuildInputs: The list of optional build inputs.
+        :type optionalBuildInputs: List
+        """
         super().__init__()
         self._name = name
         self._version = version
@@ -41,52 +88,99 @@ class Flake(Entity, EventListener, EventEmitter):
     @property
     @primary_key_attribute
     def name(self) -> str:
+        """
+        Retrieves the name of the flake.
+        :return: The flake name.
+        :rtype: str
+        """
         return self._name
 
     @property
     @primary_key_attribute
     def version(self) -> str:
+        """
+        Retrieves the version of the flake.
+        :return: The flake version.
+        :rtype: str
+        """
         return self._version
 
     @property
     @attribute
     def python_package(self) -> PythonPackage:
+        """
+        Retrieves the Python package.
+        :return: The package.
+        :rtype: PythonPackage from pythonedasharedpython.python_package
+        """
         return self._python_package
 
     @property
     @attribute
     def native_build_inputs(self) -> List:
+        """
+        Retrieves the native build inputs.
+        :return: Such list.
+        :rtype: List
+        """
         return self._native_build_inputs
 
     @property
     @attribute
     def propagated_build_inputs(self) -> List:
+        """
+        Retrieves the propagated build inputs.
+        :return: Such list.
+        :rtype: List
+        """
         return self._propagated_build_inputs
 
     @property
     @attribute
     def build_inputs(self) -> List:
+        """
+        Retrieves the build inputs.
+        :return: Such list.
+        :rtype: List
+        """
         return self._build_inputs
 
     @property
     @attribute
     def check_inputs(self) -> List:
+        """
+        Retrieves the check inputs.
+        :return: Such list.
+        :rtype: List
+        """
         return self._check_inputs
 
     @property
     @attribute
     def optional_build_inputs(self) -> List:
+        """
+        Retrieves the optional build inputs.
+        :return: Such list.
+        :rtype: List
+        """
         return self._optional_build_inputs
 
     @classmethod
     def supported_events(cls) -> List[Type[Event]]:
         """
         Retrieves the list of supported event classes.
+        :return: Such list
+        :rtype: List
         """
         return [ FlakeRequested, PythonPackageResolved ]
 
     @classmethod
     async def listenFlakeRequested(cls, event: FlakeRequested): # -> FlakeCreated:
+        """
+        Receives a FlakeRequested event.
+        :param event: Such event.
+        :type event: FlakeRequested from pythonedaeventnixflakes.flake_requested
+        """
         result = None
         logger = logging.getLogger(__name__)
         logger.info(f'Received "flake requested for {event.package_name}-{event.package_version}"')
@@ -119,12 +213,22 @@ class Flake(Entity, EventListener, EventEmitter):
 
     @classmethod
     async def listenPythonPackageResolved(cls, event: PythonPackageResolved):
+        """
+        Receives a PythonPackageResolved event.
+        :param event: Such event.
+        :type event: PythonPackageResolved from pythonedaeventpythonpackages.python_package_resolved
+        """
         flakeInProgress = FlakeInProgress.matching(name=event.package_name, version=event.package_version)
         flakeInProgress.set_python_package(event.python_package)
         self.__class__.emit(BuildFlakeRequested(event.package_name, event.package_version, flakeInProgress.flakes_folder, event.python_package))
 
     @classmethod
     async def oldListenFlakeRequested(cls, event: FlakeRequested): # -> FlakeCreated:
+        """
+        Old version of the method to process an incoming FlakeRequested event.
+        :param event: Such event.
+        :type event: FlakeRequested from pythonedaeventnixflakes.flake_requested
+        """
         result = None
         logger = logging.getLogger(__name__)
         logger.info(f'Received "flake requested for {event.package_name}-{event.package_version}"')
@@ -203,13 +307,20 @@ class Flake(Entity, EventListener, EventEmitter):
 
     @classmethod
     async def listenPythonPackageCreated(cls, event: PythonPackageCreated): # -> FlakeCreated:
+        """
+        Receives a PythonPackageCreated event.
+        :param event: Such event.
+        :type event: PythonPackageCreated from pythonedaeventpythonpackages.python_package_created
+        """
         logger = logging.getLogger(__name__)
         logger.debug(f'Received PythonPackageCreated')
 
     @classmethod
     def find_recipe_by_flake(cls, flake):
         """
-        Retrieves the best recipe for given Flake
+        Retrieves the best recipe for given Flake.
+        :param flake: The flake.
+        :type flake: Flake from pythonedanixflakes.flake
         """
         result = None
         flakeRecipeClasses = Ports.instance().resolveFlakeRecipeRepo().find_recipe_classes_by_flake(flake)
@@ -223,18 +334,51 @@ class Flake(Entity, EventListener, EventEmitter):
 
     @classmethod
     def cleanup_nixpkgs_dependencies(cls, inputs: List[PythonPackage], inNixpkgs: List[PythonPackage]) -> List[PythonPackage]:
+        """
+        Cleans up nixpkgs dependencies.
+        :param inputs: The inputs.
+        :type inputs: List
+        :param inNixpkgs: The dependencies in nixpkgs.
+        :type inNixpkgs: List
+        :return: A cleaned-up list.
+        :rtype: List
+        """
         curatedInputs = list([input for input in inputs if not any((input.name == nixpkg.name) for nixpkg in inNixpkgs)])
         curatedNixpkgs = list([nixpkg for nixpkg in inNixpkgs if any((input.name == nixpkg.name) for input in inputs)])
         return curatedInputs + curatedNixpkgs
 
     def dependency_in_nixpkgs(self, dep) -> bool:
+        """
+        Checks if given dependency is in nixpkgs.
+        :param dep: The dependency to check.
+        :type dep: object
+        :return: True in such case.
+        :rtype: bool
+        """
         return dep.in_nixpkgs() or dep in self.dependencies_in_nixpkgs
 
     def __str__(self):
+        """
+        Provides a string representation of the flake.
+        :return: Such representation.
+        :rtype: str
+        """
         return super(Entity, self).__str__()
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
+        """
+        Check if this flake is equivalent to given object.
+        :param other: The other object.
+        :type other: object
+        :return: True in such case.
+        :rtype: bool
+        """
         return super(Entity, self).__eq__(other)
 
     def __hash__(self):
+        """
+        Retrieves the hash of this flake.
+        :return: Such value.
+        :rtype: int
+        """
         return super(Entity, self).__hash__()

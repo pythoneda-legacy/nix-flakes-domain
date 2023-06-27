@@ -1,21 +1,22 @@
 [tool.poetry]
 name = "pythoneda-nix-flakes"
-version = "0.0.1a2"
-description = "Nix Flakes in PythonEDA"
+version = "0.0.1a3"
+description = "PythonEDA's Nix Flakes domain"
 authors = ["rydnr <github@acm-sl.org>"]
 readme = "README.md"
-homepage = "https://github.com/python/nix-flakes"
-packages = [{include = "PythonEDANixFlakes"}]
+homepage = "https://github.com/pythoneda/nix-flakes"
+packages = [{include = "pythonedanixflakes"}]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-pythoneda = "^0.0.1a7"
-pythoneda-git-repositories = "^0.0.1a4"
+python = "^3.8"
+pythoneda-base = "^0.0.1a15"
+pythoneda-event-nix-flakes = "^0.0.1a1"
 pythoneda-shared-nix = "^0.0.1a4"
-pythoneda-python-packages = "^0.0.1a3"
+pythoneda-shared-git = "^0.0.1a2"
+#pythoneda-shared-python-packages = "^0.0.1a1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.0"
+pytest = "^7.2"
 
 [build-system]
 requires = ["poetry-core"]
